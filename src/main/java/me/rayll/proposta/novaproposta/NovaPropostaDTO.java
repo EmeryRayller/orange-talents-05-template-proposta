@@ -1,7 +1,7 @@
 package me.rayll.proposta.novaproposta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.rayll.proposta.validacoes.annotations.CPFouCNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -13,39 +13,59 @@ public class NovaPropostaDTO {
 
     @JsonIgnore
     private Long id;
-    @NotEmpty @CPFouCNPJ
+    @CPF
     private String documento;
     @NotEmpty @Email
     private String email;
     @NotEmpty
     private String nome;
-    @NotEmpty
-    private String endereco;
     @NotNull @Positive
     private BigDecimal salario;
+    @NotNull
+    private EnderecoProposta endereco;
 
     @Deprecated
     private NovaPropostaDTO() {
     }
 
-    public NovaPropostaDTO(String documento, String email, String nome, String endereco, BigDecimal salario) {
+    public NovaPropostaDTO(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
-        this.endereco = endereco;
         this.salario = salario;
+        this.endereco = endereco;
     }
 
     public NovaProposta toModel() {
-        return new NovaProposta(this.documento, this.email, this.nome, this.endereco, this.salario);
-    }
-
-
-    public String getDocumento() {
-        return this.documento;
+        return new NovaProposta(
+                this.documento,
+                this.email,
+                this.nome,
+                this.salario,
+                this.endereco);
     }
 
     public Long getId() {
-        return this.id;
+        return id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public EnderecoProposta getEndereco() {
+        return endereco;
     }
 }

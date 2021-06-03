@@ -1,9 +1,6 @@
 package me.rayll.proposta.novaproposta;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -14,15 +11,19 @@ public class NovaProposta {
     private String documento;
     private String email;
     private String nome;
-    private String endereco;
+    @Embedded
+    private EnderecoProposta endereco;
     private BigDecimal salario;
 
-    public NovaProposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
+    @Deprecated
+    private NovaProposta(){}
+
+    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
-        this.endereco = endereco;
         this.salario = salario;
+        this.endereco = endereco;
     }
 
     public NovaPropostaDTO toDTO() {
@@ -30,8 +31,8 @@ public class NovaProposta {
                 this.documento,
                 this.email,
                 this.nome,
-                this.endereco,
-                this.salario
+                this.salario,
+                this.endereco
         );
     }
 }
