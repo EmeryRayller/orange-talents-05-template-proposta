@@ -23,6 +23,13 @@ public class NovaPropostaController {
             @RequestBody @Valid NovaPropostaDTO dto,
             UriComponentsBuilder uriComponentsBuilder){
 
+        //Validação caso já exista uma proposta para o documento
+        if(propostaRepository.existsByDocumento(dto.getDocumento())){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Já existe uma proposta para este registro.");
+        }
+
         //Código para transformar um dto para model e salvar
         NovaProposta novaProposta = propostaRepository.save(dto.toModel());
 
