@@ -1,7 +1,14 @@
 package me.rayll.proposta.novaproposta;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
 
 @Entity
 public class NovaProposta {
@@ -14,25 +21,31 @@ public class NovaProposta {
     @Embedded
     private EnderecoProposta endereco;
     private BigDecimal salario;
+    private EstadoProposta estadoProposta;
 
     @Deprecated
     private NovaProposta(){}
 
-    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco) {
+    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco, EstadoProposta proposta) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
         this.salario = salario;
         this.endereco = endereco;
+        this.estadoProposta = proposta;
     }
 
     public NovaPropostaDTO toDTO() {
-        return new NovaPropostaDTO(
+        NovaPropostaDTO propostaDTO = new NovaPropostaDTO(
                 this.documento,
                 this.email,
                 this.nome,
                 this.salario,
                 this.endereco
         );
+        propostaDTO.setEstadoProposta(this.estadoProposta);
+        propostaDTO.setId(this.id);
+        return propostaDTO;
     }
+	
 }

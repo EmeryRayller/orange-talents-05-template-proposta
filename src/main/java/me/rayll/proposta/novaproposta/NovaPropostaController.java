@@ -43,6 +43,8 @@ public class NovaPropostaController {
                 .body(novaProposta.toDTO());
     }
 
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> propostaCriada(@PathVariable Long id){
 
