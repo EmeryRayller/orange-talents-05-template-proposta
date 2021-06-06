@@ -27,11 +27,15 @@ public class AprovacaoPropostaController {
 	
 	@PostMapping("/{id}")
 	public ResponseEntity<NovaPropostaDTO> getAprovacao(@PathVariable Long id){
-		//Busca uma proposta por id através do repository e já a mapeia para um dto.
-		NovaPropostaDTO proposta = propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "")).toDTO();
+		//Busca uma proposta por id através do repository
+		NovaProposta proposta = 
+				propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
 		
 		//mapeia uma proposta para uma PropostaAprovacao, que irá consultar a api externa
-		PropostaAprovacao propostaAprovacao = proposta.toPropostaAprovacao();
+		PropostaAprovacao propostaAprovacao = new PropostaAprovacao(
+				proposta.toDTO().getDocumento(), 
+				proposta.toDTO().getNome(), 
+				proposta.toDTO().getId());
 		
 		//mapeia outro objeto de PropostaAprovacao com o retorno do endpoint externo
 		PropostaAprovacao aprovacao = aprovacaoPropostaFeign.getAprovacao(propostaAprovacao);
@@ -40,9 +44,8 @@ public class AprovacaoPropostaController {
 		proposta.setEstadoProposta(aprovacao.estadoProposta());
 		
 		//salvando a proposta com repository
-		NovaProposta propostaParaSalvar = propostaRepository.save(proposta.toModel());
+		propostaRepository.save(proposta);
 		
-		
-		return ResponseEntity.ok(propostaParaSalvar.toDTO());
+		return ResponseEntity.ok(proposta.toDTO());
 	}
 }

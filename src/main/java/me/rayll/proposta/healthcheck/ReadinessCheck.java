@@ -5,7 +5,9 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.availability.ApplicationAvailability;
 import org.springframework.boot.availability.AvailabilityState;
 import org.springframework.boot.availability.ReadinessState;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReadinessCheck extends AvailabilityStateHealthIndicator {
 
 	public ReadinessCheck(ApplicationAvailability availability) {

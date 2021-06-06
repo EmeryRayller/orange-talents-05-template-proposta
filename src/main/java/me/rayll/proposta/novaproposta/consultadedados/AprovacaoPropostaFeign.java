@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * A notação precisa de um nome e a url de consulta.
  */
 
-@FeignClient(name = "propostaAprovacao", url = "http://localhost:9999/api/solicitacao")
+@FeignClient(name = "propostaAprovacao", url = "${aprovacao_proposta_url}")
 public interface AprovacaoPropostaFeign {
 	
 	@PostMapping

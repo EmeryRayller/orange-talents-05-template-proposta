@@ -14,6 +14,8 @@ public class PropostaAprovacao {
 	
 	private String resultadoSolicitacao;
 	
+	private String numeroCartao;
+	
 	@Deprecated
 	private PropostaAprovacao() {}
 
@@ -51,4 +53,12 @@ public class PropostaAprovacao {
 		return this.resultadoSolicitacao == "COM_RESTRICAO" ? EstadoProposta.NAO_ELEGIVEL : EstadoProposta.ELEGIVEL;
 	}
 
+	public String getNumeroCartao() {
+		return numeroCartao;
+	}
+
+	public void setNumeroCartao(String numeroCartao) {
+		this.numeroCartao = numeroCartao;
+	}
+	
 }

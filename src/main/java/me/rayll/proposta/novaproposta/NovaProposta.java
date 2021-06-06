@@ -22,17 +22,19 @@ public class NovaProposta {
     private EnderecoProposta endereco;
     private BigDecimal salario;
     private EstadoProposta estadoProposta;
+	private String numeroCartao;
 
     @Deprecated
     private NovaProposta(){}
 
-    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco, EstadoProposta proposta) {
+    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco, EstadoProposta proposta, String numeroCartao) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
         this.salario = salario;
         this.endereco = endereco;
         this.estadoProposta = proposta;
+        this.numeroCartao = numeroCartao;
     }
 
     public NovaPropostaDTO toDTO() {
@@ -47,5 +49,13 @@ public class NovaProposta {
         propostaDTO.setId(this.id);
         return propostaDTO;
     }
+
+	public void setEstadoProposta(EstadoProposta estadoProposta2) {
+		this.estadoProposta = estadoProposta2;
+	}
+
+	public void setNumeroCartao(String numeroCartao2) {
+		this.numeroCartao = numeroCartao2;		
+	}
 	
 }

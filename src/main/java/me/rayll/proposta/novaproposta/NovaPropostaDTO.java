@@ -27,7 +27,9 @@ public class NovaPropostaDTO {
     @NotNull
     private EnderecoProposta endereco;
 
-    private EstadoProposta estadoProposta;
+    private EstadoProposta estadoProposta  = EstadoProposta.NAO_ELEGIVEL;
+    
+    private String numeroCartao = "";
 
     @Deprecated
     private NovaPropostaDTO() {
@@ -60,7 +62,8 @@ public class NovaPropostaDTO {
                 this.nome,
                 this.salario,
                 this.endereco,
-                this.estadoProposta);
+                this.estadoProposta,
+                this.numeroCartao);
     }
 
     public Long getId() {
@@ -100,4 +103,12 @@ public class NovaPropostaDTO {
     public PropostaAprovacao toPropostaAprovacao() {
         return new PropostaAprovacao(documento, nome, id);
     }
+
+	public String getNumeroCartao() {
+		return numeroCartao;
+	}
+
+	public void setNumeroCartao(String numeroCartao) {
+		this.numeroCartao = numeroCartao;
+	}
 }
