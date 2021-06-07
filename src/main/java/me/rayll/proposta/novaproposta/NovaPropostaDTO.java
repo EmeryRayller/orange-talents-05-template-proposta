@@ -1,14 +1,17 @@
 package me.rayll.proposta.novaproposta;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
-import org.hibernate.validator.constraints.br.CPF;
+import java.math.BigDecimal;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
+
+import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
 
 public class NovaPropostaDTO {
 

@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
-
 @Entity
 public class NovaProposta {
 

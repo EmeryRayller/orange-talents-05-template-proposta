@@ -1,6 +1,6 @@
 package me.rayll.proposta.novaproposta;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
