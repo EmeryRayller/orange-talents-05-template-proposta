@@ -2,6 +2,8 @@ package me.rayll.proposta.cadastrobiometria;
 
 import javax.validation.constraints.NotEmpty;
 
+import me.rayll.proposta.cartao.Cartao;
+
 public class BiometriaDTO {
 	
 	private String id;
@@ -19,8 +21,8 @@ public class BiometriaDTO {
 		this.numeroCartao = numeroCartao;
 	}
 
-	public Biometria toModel() {
-		return new Biometria(this.numeroCartao, this.idBiometria);
+	public Biometria toModel(Cartao cartao) {
+		return new Biometria(cartao, this.idBiometria);
 	}
 
 	public String getIdBiometria() {

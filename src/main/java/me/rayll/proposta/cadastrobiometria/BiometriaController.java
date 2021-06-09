@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import me.rayll.proposta.cartao.Cartao;
 import me.rayll.proposta.cartao.CartaoRepository;
 import me.rayll.proposta.novaproposta.PropostaRepository;
 
@@ -36,14 +37,12 @@ public class BiometriaController {
 			throw new IllegalArgumentException("A biometria não foi coletada corretamente!");
 		}
 		
-		if(!cartaoRepository.existsById(dto.getNumeroCartao())) {
-			throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Cartão não existe!");
-		}
+		Cartao c = cartaoRepository.findById(dto.getNumeroCartao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão inválido!"));
 		
 		String bioEncoder = Base64.getEncoder().encodeToString(dto.getIdBiometria().getBytes());
 		dto.setIdBiometria(bioEncoder);
 		
-		Biometria biometria = biometriaRepository.save(dto.toModel());
+		Biometria biometria = biometriaRepository.save(dto.toModel(c));
 		
 		URI uri2 = uri.path("/cadastrobiometria/{id}").buildAndExpand( biometria.toDTO().getId()).toUri();
 		
