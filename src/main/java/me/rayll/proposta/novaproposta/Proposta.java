@@ -1,42 +1,53 @@
 package me.rayll.proposta.novaproposta;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import me.rayll.proposta.cartao.Cartao;
 
 @Entity
-public class NovaProposta {
+public class Proposta {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String documento;
     private String email;
     private String nome;
+    
     @Embedded
     private EnderecoProposta endereco;
     private BigDecimal salario;
     private EstadoProposta estadoProposta;
-	private String numeroCartao;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+	private Cartao cartao;
 
     @Deprecated
-    private NovaProposta(){}
+    private Proposta(){}
 
-    public NovaProposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco, EstadoProposta proposta, String numeroCartao) {
+    public Proposta(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco, EstadoProposta proposta) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
         this.salario = salario;
         this.endereco = endereco;
         this.estadoProposta = proposta;
-        this.numeroCartao = numeroCartao;
+        
     }
 
-    public NovaPropostaDTO toDTO() {
-        NovaPropostaDTO propostaDTO = new NovaPropostaDTO(
+    public PropostaDTO toDTO() {
+        PropostaDTO propostaDTO = new PropostaDTO(
                 this.documento,
                 this.email,
                 this.nome,
@@ -45,6 +56,10 @@ public class NovaProposta {
         );
         propostaDTO.setEstadoProposta(this.estadoProposta);
         propostaDTO.setId(this.id);
+        
+        if(this.cartao != null)
+        	propostaDTO.setCartao(this.cartao.getId());
+        
         return propostaDTO;
     }
 
@@ -52,8 +67,7 @@ public class NovaProposta {
 		this.estadoProposta = estadoProposta2;
 	}
 
-	public void setNumeroCartao(String numeroCartao2) {
-		this.numeroCartao = numeroCartao2;		
+	public void setCartao(Cartao novoCartao) {
+		this.cartao = novoCartao;
 	}
-	
 }

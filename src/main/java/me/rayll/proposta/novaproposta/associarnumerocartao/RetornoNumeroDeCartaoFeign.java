@@ -1,13 +1,13 @@
 package me.rayll.proposta.novaproposta.associarnumerocartao;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(url = "http://localhost:8888/api/cartoes", name = "criarCartao")
 public interface RetornoNumeroDeCartaoFeign {
-	@PostMapping
-	public String criarCartaoString(@RequestBody PropostaAprovacao propostaAprovacao);
+	
+	@GetMapping
+	public String criarCartaoString(@RequestParam("idProposta") String idProposta);
+	
 }

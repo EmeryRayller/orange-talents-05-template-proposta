@@ -1,6 +1,9 @@
 package me.rayll.proposta.novaproposta;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
 
-public class NovaPropostaDTO {
+public class PropostaDTO {
 
     @JsonIgnore
     private Long id;
@@ -32,13 +35,13 @@ public class NovaPropostaDTO {
 
     private EstadoProposta estadoProposta  = EstadoProposta.NAO_ELEGIVEL;
     
-    private String numeroCartao = "";
+    private String cartao = "";
 
     @Deprecated
-    private NovaPropostaDTO() {
+    private PropostaDTO() {
     }
 
-    public NovaPropostaDTO(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco) {
+    public PropostaDTO(String documento, String email, String nome, BigDecimal salario, EnderecoProposta endereco) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
@@ -47,7 +50,7 @@ public class NovaPropostaDTO {
     }
 
 
-    public NovaPropostaDTO(Long id, @CPF String documento, @NotEmpty @Email String email, @NotEmpty String nome,
+    public PropostaDTO(Long id, @CPF String documento, @NotEmpty @Email String email, @NotEmpty String nome,
                            @NotNull @Positive BigDecimal salario, @NotNull EnderecoProposta endereco, EstadoProposta estadoProposta) {
         this.id = id;
         this.documento = documento;
@@ -58,15 +61,14 @@ public class NovaPropostaDTO {
         this.estadoProposta = estadoProposta;
     }
 
-    public NovaProposta toModel() {
-        return new NovaProposta(
+    public Proposta toModel() {
+        return new Proposta(
                 this.documento,
                 this.email,
                 this.nome,
                 this.salario,
                 this.endereco,
-                this.estadoProposta,
-                this.numeroCartao);
+                this.estadoProposta);
     }
 
     public Long getId() {
@@ -107,11 +109,11 @@ public class NovaPropostaDTO {
         return new PropostaAprovacao(documento, nome, id);
     }
 
-	public String getNumeroCartao() {
-		return numeroCartao;
+	public String getCartao() {
+		return cartao;
 	}
 
-	public void setNumeroCartao(String numeroCartao) {
-		this.numeroCartao = numeroCartao;
+	public void setCartao(String cartao) {
+		this.cartao = cartao;
 	}
 }

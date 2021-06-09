@@ -17,15 +17,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/novaproposta")
-public class NovaPropostaController {
+public class PropostaController {
 
     @Autowired
     private PropostaRepository propostaRepository;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<NovaPropostaDTO> criarNovaProposta(
-            @RequestBody @Valid NovaPropostaDTO dto,
+    public ResponseEntity<PropostaDTO> criarNovaProposta(
+            @RequestBody @Valid PropostaDTO dto,
             UriComponentsBuilder uriComponentsBuilder){
 
         //Validação caso já exista uma proposta para o documento
@@ -36,10 +36,10 @@ public class NovaPropostaController {
         }
 
         //Código para transformar um dto para model e salvar
-        NovaProposta novaProposta = propostaRepository.save(dto.toModel());
+        Proposta novaProposta = propostaRepository.save(dto.toModel());
 
         //Proposta criada tranformarda em DTO para poder ser manipulada.
-        NovaPropostaDTO propostaSalvaDTO = novaProposta.toDTO();
+        PropostaDTO propostaSalvaDTO = novaProposta.toDTO();
 
         //Retorno de uma ReponseEntity com o header da localização do recurso e NovaPropostaCriada
         return ResponseEntity.
@@ -48,17 +48,15 @@ public class NovaPropostaController {
                 .body(novaProposta.toDTO());
     }
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<?> propostaCriada(@PathVariable Long id){
 
         //Busca a proposta por id, caso não retorna exceção
-        NovaProposta novaProposta = propostaRepository.findById(id).orElseThrow(
+        Proposta novaProposta = propostaRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta não localizada.")
         );
         //mapeia entidade para dto
-        NovaPropostaDTO propostaDTO = novaProposta.toDTO();
+        PropostaDTO propostaDTO = novaProposta.toDTO();
 
         return ResponseEntity.ok(propostaDTO);
     }

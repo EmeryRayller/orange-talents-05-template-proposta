@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import me.rayll.proposta.novaproposta.NovaProposta;
-import me.rayll.proposta.novaproposta.NovaPropostaDTO;
+import me.rayll.proposta.novaproposta.Proposta;
+import me.rayll.proposta.novaproposta.PropostaDTO;
 import me.rayll.proposta.novaproposta.PropostaRepository;
 
 @RestController
@@ -24,16 +24,18 @@ public class AprovacaoPropostaController {
 	PropostaRepository propostaRepository;
 	
 	@PostMapping("/{id}")
-	public ResponseEntity<NovaPropostaDTO> getAprovacao(@PathVariable Long id){
+	public ResponseEntity<PropostaDTO> getAprovacao(@PathVariable Long id){
 		//Busca uma proposta por id através do repository
-		NovaProposta proposta = 
+		Proposta proposta = 
 				propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
+		
+		PropostaDTO propostaDTO = proposta.toDTO();
 		
 		//mapeia uma proposta para uma PropostaAprovacao, que irá consultar a api externa
 		PropostaAprovacao propostaAprovacao = new PropostaAprovacao(
-				proposta.toDTO().getDocumento(), 
-				proposta.toDTO().getNome(), 
-				proposta.toDTO().getId());
+				propostaDTO.getDocumento(), 
+				propostaDTO.getNome(), 
+				propostaDTO.getId());
 		
 		//mapeia outro objeto de PropostaAprovacao com o retorno do endpoint externo
 		PropostaAprovacao aprovacao = aprovacaoPropostaFeign.getAprovacao(propostaAprovacao);

@@ -2,6 +2,8 @@ package me.rayll.proposta.novaproposta.associarnumerocartao;
 
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +18,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import me.rayll.proposta.cartao.Cartao;
 import me.rayll.proposta.novaproposta.EstadoProposta;
-import me.rayll.proposta.novaproposta.NovaProposta;
+import me.rayll.proposta.novaproposta.Proposta;
 import me.rayll.proposta.novaproposta.PropostaRepository;
-import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
 
 @EnableScheduling
 @Component
 public class AcompanhamentoNumeroCartaoSchedule {
 
-	private final String EMPTY_STRING = "";
-	
 	@Autowired
 	private PropostaRepository propostaRepository;
 	@Autowired
@@ -34,32 +34,33 @@ public class AcompanhamentoNumeroCartaoSchedule {
 
 	@Async
 	@Scheduled(fixedDelay = 5000L, initialDelay = 10000L)
+	@Transactional
 	public ResponseEntity<String> executaBuscaDePropostasSemNumeroDeCartao() throws JsonMappingException, JsonProcessingException {
 		//buscar NovasPropostas elegíveis e sem numero de cartão no repository
-		Set<NovaProposta> listaBuscada = 
-				propostaRepository.findByEstadoPropostaLikeAndNumeroCartaoLike(EstadoProposta.ELEGIVEL, EMPTY_STRING);
+		Set<Proposta> listaBuscada = buscarPropostasElegiveis();
 		
 		if(listaBuscada.size() > 0) {
 			try {
-				for (NovaProposta novaProposta : listaBuscada) {
+				for (Proposta novaProposta : listaBuscada) {
 					//busca na api externa o numero do cartão e retorna um json em string
-					String s = retornoCartaoFeign.criarCartaoString(new PropostaAprovacao(
-							novaProposta.toDTO().getDocumento(),
-							novaProposta.toDTO().getNome(), 
-							novaProposta.toDTO().getId()));
+					String s = retornoCartaoFeign.criarCartaoString(novaProposta.toDTO().getId().toString());
 					
-					//object mapper do jackson para mapear um json pra uma classe
 					ObjectMapper mapper = new ObjectMapper();
-					//json node faz semelhante ao que o javascript faz com json
-					String id = mapper.readValue(s, JsonNode.class).get("id").asText();
+					String idCartaoRecebido = mapper.readValue(s, JsonNode.class).get("id").asText();
 					
-					novaProposta.setNumeroCartao(id);
-					propostaRepository.save(novaProposta);
+						Cartao cartao = new Cartao(idCartaoRecebido, novaProposta);
+						novaProposta.setCartao(cartao);						
+						propostaRepository.save(novaProposta);
+								
 				}
 			} catch (ResponseStatusException e) {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
 			}
 		}
 		return ResponseEntity.ok("");
+	}
+	
+	private Set<Proposta> buscarPropostasElegiveis() {
+		return propostaRepository.findByEstadoPropostaLikeAndCartaoNotNull(EstadoProposta.ELEGIVEL);
 	}
 }

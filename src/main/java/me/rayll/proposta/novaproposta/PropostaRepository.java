@@ -4,8 +4,11 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PropostaRepository extends JpaRepository<NovaProposta, Long> {
+import me.rayll.proposta.cartao.Cartao;
+
+public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     public boolean existsByDocumento(String documento);
     
-    public Set<NovaProposta> findByEstadoPropostaLikeAndNumeroCartaoLike(EstadoProposta estadoProposta, String numeroCartao);
+    public Set<Proposta> findByEstadoPropostaLikeAndCartaoNotNull(EstadoProposta estadoProposta);
+
 }
