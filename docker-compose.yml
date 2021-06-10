@@ -147,7 +147,31 @@ services:
       - 3307:3306
     volumes: 
       - mysql_proposta-volume:/var/lib/mysql
-
+      
+  apispring:
+    build:
+      dockerfile: docker-files/springexec.dockerfile
+      context: .
+    environment:
+      DATASOURCE_DB: db:3306
+      DATASOURCE_USER: rayller
+      DATASOURCE_PASS: emery
+      APROVACAO_PROPOSTA_URL: analise:9999
+      ISSUER_KEYCLOAK_URI: keycloak:18080
+      JWT_JWK_SET_URI: keycloak:18080
+    ports:
+      - 8081:8081
+    depends_on:
+      - grafana
+      - prometheus
+      - jaeger
+      - kafka
+      - zookeeper
+      - contas
+      - analise
+      - transacoes
+      - postgres
+      - db
 volumes:
   grafana-volume:
   prometheus-volume:

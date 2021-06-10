@@ -35,7 +35,7 @@ public class AcompanhamentoNumeroCartaoSchedule {
 	@Async
 	@Scheduled(fixedDelay = 5000L, initialDelay = 10000L)
 	@Transactional
-	public ResponseEntity<String> executaBuscaDePropostasSemNumeroDeCartao() throws JsonMappingException, JsonProcessingException {
+	public ResponseEntity<Void> executaBuscaDePropostasSemNumeroDeCartao() throws JsonMappingException, JsonProcessingException {
 		//buscar NovasPropostas elegíveis e sem numero de cartão no repository
 		Set<Proposta> listaBuscada = buscarPropostasElegiveis();
 		
@@ -54,10 +54,10 @@ public class AcompanhamentoNumeroCartaoSchedule {
 								
 				}
 			} catch (ResponseStatusException e) {
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 			}
 		}
-		return ResponseEntity.ok("");
+		return ResponseEntity.ok().build();
 	}
 	
 	private Set<Proposta> buscarPropostasElegiveis() {

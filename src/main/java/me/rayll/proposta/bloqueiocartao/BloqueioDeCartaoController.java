@@ -40,7 +40,7 @@ public class BloqueioDeCartaoController {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
 		
-		cartao.trocarStatusCartao(StatusCartao.BLOQUEADO);
+		cartao.trocarStatusCartao(StatusCartao.PENDENTE);
 		cartaoRepository.save(cartao);
 		
 		BloqueioCartao bc = bloqueioRepository.save(dto.toModel(cartao));

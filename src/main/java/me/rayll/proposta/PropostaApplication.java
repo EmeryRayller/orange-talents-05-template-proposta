@@ -1,5 +1,6 @@
 package me.rayll.proposta;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -9,6 +10,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.scheduling.config.ScheduledTask;
 
+import me.rayll.proposta.cartao.Cartao;
+import me.rayll.proposta.cartao.CartaoRepository;
+import me.rayll.proposta.cartao.StatusCartao;
 import me.rayll.proposta.novaproposta.associarnumerocartao.AcompanhamentoNumeroCartaoSchedule;
 
 @SpringBootApplication
@@ -17,7 +21,6 @@ public class PropostaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PropostaApplication.class, args);
-		
 	}
 
 }
