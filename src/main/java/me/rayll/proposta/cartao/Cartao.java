@@ -2,9 +2,6 @@ package me.rayll.proposta.cartao;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import me.rayll.proposta.novaproposta.Proposta;
@@ -37,6 +34,10 @@ public class Cartao {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+	
+	public void trocarStatusCartao(StatusCartao statusCartao) {
+		this.statusCartao = statusCartao;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -53,6 +54,10 @@ public class Cartao {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public StatusCartao getStatusCartao() {
+		return this.statusCartao;
 	}
 	
 }

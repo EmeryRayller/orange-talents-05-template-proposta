@@ -1,9 +1,6 @@
 package me.rayll.proposta.novaproposta;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -11,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import me.rayll.proposta.cartao.Cartao;
@@ -30,7 +26,7 @@ public class Proposta {
     private BigDecimal salario;
     private EstadoProposta estadoProposta;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
 	private Cartao cartao;
 
     @Deprecated

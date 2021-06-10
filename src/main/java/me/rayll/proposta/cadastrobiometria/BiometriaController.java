@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import me.rayll.proposta.cartao.Cartao;
 import me.rayll.proposta.cartao.CartaoRepository;
-import me.rayll.proposta.novaproposta.PropostaRepository;
 
 @RestController
 @RequestMapping("/cadastrobiometria")

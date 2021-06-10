@@ -61,6 +61,6 @@ public class AcompanhamentoNumeroCartaoSchedule {
 	}
 	
 	private Set<Proposta> buscarPropostasElegiveis() {
-		return propostaRepository.findByEstadoPropostaLikeAndCartaoNotNull(EstadoProposta.ELEGIVEL);
+		return propostaRepository.findByEstadoPropostaLikeAndCartaoNull(EstadoProposta.ELEGIVEL);
 	}
 }
