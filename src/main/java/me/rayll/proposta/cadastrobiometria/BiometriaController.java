@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Base64;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,11 +31,7 @@ public class BiometriaController {
 	private BiometricaRepository biometriaRepository;
 	
 	@PostMapping
-	public ResponseEntity<?> cadastroBiometrica(@RequestBody BiometriaDTO dto, UriComponentsBuilder uri){
-		
-		if(dto.getIdBiometria().isEmpty()) {
-			throw new IllegalArgumentException("A biometria não foi coletada corretamente!");
-		}
+	public ResponseEntity<Void> cadastroBiometrica(@RequestBody @Valid BiometriaDTO dto, UriComponentsBuilder uri){
 		
 		Cartao c = cartaoRepository.findById(dto.getNumeroCartao()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão inválido!"));
 		
