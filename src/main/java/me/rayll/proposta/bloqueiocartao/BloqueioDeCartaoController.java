@@ -3,6 +3,7 @@ package me.rayll.proposta.bloqueiocartao;
 import java.net.URI;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class BloqueioDeCartaoController {
 	private BloqueioRepository bloqueioRepository;
 	
 	@PostMapping("/{idCartao}")
-	public ResponseEntity<Void> solicitacaoDeBloqueio(@PathVariable String idCartao, @RequestBody BloqueioCartaoDTO dto, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<Void> solicitacaoDeBloqueio(@PathVariable String idCartao, @RequestBody @Valid BloqueioCartaoDTO dto, UriComponentsBuilder uriComponentsBuilder) {
 		
 		Cartao cartao = cartaoRepository.findById(idCartao).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não existe!"));
 		

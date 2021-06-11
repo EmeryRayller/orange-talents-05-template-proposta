@@ -1,3 +1,5 @@
 javax.validation.ConstraintViolationException
 FeignException$UnprocessableEntity
 HttpMessageNotReadableException
+feign.FeignException$UnprocessableEntity
+feign.RetryableException
