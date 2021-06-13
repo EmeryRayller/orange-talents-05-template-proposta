@@ -1,5 +1,5 @@
 package me.rayll.proposta.associacaocarteira;
 
 public enum CarteiraAssociacaoEnum {
-	PAYPAL
+	PAYPAL, SAMSUNG_PAY;
 }
