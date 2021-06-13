@@ -59,5 +59,9 @@ public class Cartao {
 	public StatusCartao getStatusCartao() {
 		return this.statusCartao;
 	}
-	
+
+	public Proposta getProposta() {
+		return proposta;
+	}
+
 }
