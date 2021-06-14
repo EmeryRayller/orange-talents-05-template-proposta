@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,7 +21,7 @@ public class PropostaDTO {
 
     @JsonIgnore
     private Long id;
-    @CPF
+    @CPF @NotEmpty
     private String documento;
     @NotEmpty
     @Email
@@ -47,8 +48,8 @@ public class PropostaDTO {
         this.nome = nome;
         this.salario = salario;
         this.endereco = endereco;
+        
     }
-
 
     public PropostaDTO(Long id, @CPF String documento, @NotEmpty @Email String email, @NotEmpty String nome,
                            @NotNull @Positive BigDecimal salario, @NotNull EnderecoProposta endereco, EstadoProposta estadoProposta) {
@@ -58,7 +59,7 @@ public class PropostaDTO {
         this.nome = nome;
         this.salario = salario;
         this.endereco = endereco;
-        this.estadoProposta = estadoProposta;
+        this.estadoProposta = estadoProposta;       
     }
 
     public Proposta toModel() {
@@ -115,5 +116,12 @@ public class PropostaDTO {
 
 	public void setCartao(String cartao) {
 		this.cartao = cartao;
+	}
+	
+	public void encriptarDocumento(String documento) {
+		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
+		if(!crypt.matches(documento, this.documento)) {
+			this.documento = crypt.encode(documento);
+		}
 	}
 }

@@ -24,7 +24,7 @@ public class AprovacaoPropostaController {
 	PropostaRepository propostaRepository;
 	
 	@PostMapping("/{id}")
-	public ResponseEntity<PropostaDTO> getAprovacao(@PathVariable Long id){
+	public ResponseEntity<Void> getAprovacao(@PathVariable Long id){
 		//Busca uma proposta por id através do repository
 		Proposta proposta = 
 				propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
@@ -46,6 +46,6 @@ public class AprovacaoPropostaController {
 		//salvando a proposta com repository
 		propostaRepository.save(proposta);
 		
-		return ResponseEntity.ok(proposta.toDTO());
+		return ResponseEntity.ok().build();
 	}
 }
