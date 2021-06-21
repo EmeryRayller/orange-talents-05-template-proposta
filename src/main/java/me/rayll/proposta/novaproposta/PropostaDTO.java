@@ -1,6 +1,7 @@
 package me.rayll.proposta.novaproposta;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +11,15 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.bouncycastle.util.encoders.Hex;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import me.rayll.proposta.novaproposta.consultadedados.PropostaAprovacao;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 public class PropostaDTO {
 
@@ -119,9 +123,11 @@ public class PropostaDTO {
 	}
 	
 	public void encriptarDocumento(String documento) {
-		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
-		if(!crypt.matches(documento, this.documento)) {
-			this.documento = crypt.encode(documento);
-		}
+
+        TextEncryptor textEncryptor = Encryptors.queryableText(
+                "pass",
+                new String(Hex.encode("salt".getBytes(StandardCharsets.UTF_8)))
+        );
+        this.documento = textEncryptor.encrypt(documento);
 	}
 }
